@@ -60,12 +60,6 @@ def preparDataSet(N=50):
 def lossFuc(y, pred):
     return tf.reduce_mean(tf.square(y - pred))
 
-def model(x, y):
-    w = tf.Variable(0.0) #inital value
-    b = tf.Variable(0.0)
-    y_pred = w*x + by_pred
-    return
-
 def train(linear_model, x, y, lr=0.001):
     with tf.GradientTape() as t:
         current_loss = lossFuc(y, linear_model(x))
