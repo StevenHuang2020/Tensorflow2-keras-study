@@ -1,11 +1,13 @@
 #python3 steven tf 2.1.0
 #01/04/2020
+import numpy as np
 import tensorflow.keras as ks
 from tensorflow.keras import optimizers
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from tensorflow.keras.models import Sequential
-from mnistCnn import prepareMnistData
 
+from mnistCnn import prepareMnistData
+from plotCommon import plotSubLossAndAcc
 
 def createModel(input_shape, classes):
     model = Sequential()
@@ -51,11 +53,14 @@ def main():
     num_classes = 10
     x_train, y_train, x_test, y_test, input_shape = prepareMnistData(0.2)
     model = createModel(input_shape,num_classes)
-    history = model.fit(x=x_train, y=y_train, epochs=5)
+    history = model.fit(x=x_train, y=y_train, epochs=50)
     #printModelWeights(model)
     
     test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
     print('\nTest accuracy:', test_acc,'loss=',test_loss)
-
+    loss = np.array(history.history['loss'])
+    acc  = np.array(history.history['accuracy'])
+    plotSubLossAndAcc(loss,acc)
+    
 if __name__=='__main__':
     main()
