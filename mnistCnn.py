@@ -89,6 +89,7 @@ def createModel(input_shape,num_classes):
 
 def main():
     x_train, y_train, x_test, y_test, input_shape = prepareMnistData()
+    print('input_shape = ', input_shape)
     model = createModel(input_shape,num_classes)
     
     model.fit(x_train, y_train, epochs=10)

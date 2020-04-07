@@ -38,6 +38,7 @@ def create_model(nFeatures=1):
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                 metrics=['accuracy'])
     
+    model.summary()
     return model
 
 def main():

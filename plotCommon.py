@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np 
 
+def plotLossAx(loss,ax,label='Loss'):
+    ax.plot(loss, label=label)
+    ax.legend()
+
 def plotLoss(loss,name='Loss'):
     plt.title(name)
     plt.plot(loss)
@@ -10,6 +14,17 @@ def plotLosses(loss1,loss2,name='Losses'):
     plt.title(name)
     plt.plot(loss1)
     plt.plot(loss2)
+    plt.show()
+
+def plotLosseList(losses,labels):
+    for i,loss in enumerate(losses):
+        plt.plot(loss,label=labels[i])
+    plt.show()
+
+def plotLosseListTu(losseLabels): #loss label tuple
+    for i in losseLabels:
+        plt.plot(i[0],label=i[1])
+    plt.legend()
     plt.show()
 
 def plotLossAndAcc(loss,acc,name='Loss&Acc'):

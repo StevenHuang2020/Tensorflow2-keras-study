@@ -55,6 +55,7 @@ def create_model(nFeatures=1):
                   loss='mean_squared_error' #  #mean_absolute_error
                   ) #metrics=['accuracy']
     
+    model.summary()
     return model
 
 def main():

@@ -22,7 +22,7 @@ def createModel(input_shape, classes):
                     activation='relu', 
                     input_shape=input_shape))
         model.add(MaxPooling2D(pool_size=(2, 2)))
-        model.add(Dropout(0.5))
+        #model.add(Dropout(0.5))
 
         #model.add(Conv2D(32, (3, 3), activation="relu"))
         #model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -51,7 +51,7 @@ def createModel(input_shape, classes):
 
 def main():
     num_classes = 10
-    x_train, y_train, x_test, y_test, input_shape = prepareMnistData(0.2)
+    x_train, y_train, x_test, y_test, input_shape = prepareMnistData(0.2) #input_shape 28*28*1
     model = createModel(input_shape,num_classes)
     history = model.fit(x=x_train, y=y_train, epochs=50)
     #printModelWeights(model)
