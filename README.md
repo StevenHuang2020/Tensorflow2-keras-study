@@ -20,3 +20,7 @@
 #### cnnTf2.py
 <br/>
 <img src="images/mnistCnn.png" width="320" height="240">
+
+#### mnist_GAN.py
+<br/>
+<img src="images/dcgan.gif" width="320" height="240">
