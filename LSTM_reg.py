@@ -97,7 +97,7 @@ def main():
     print('train5=',trainX[:5])
     trainPredict = model.predict(trainX[:5])
     print('pred5=',trainPredict)
-    if 0:
+    if 1:
         '''-----------start------evaluate-----'''
         # make predictions
         trainPredict = model.predict(trainX)
@@ -114,14 +114,20 @@ def main():
         print('Train Score: %.2f RMSE' % (trainScore))
         testScore = math.sqrt(mean_squared_error(testY[0], testPredict[:,0]))
         print('Test Score: %.2f RMSE' % (testScore))
+        
         # shift train predictions for plotting
         trainPredictPlot = np.empty_like(dataset)
         trainPredictPlot[:, :] = np.nan
         trainPredictPlot[look_back:len(trainPredict)+look_back, :] = trainPredict
+        
         # shift test predictions for plotting
         testPredictPlot = np.empty_like(dataset)
         testPredictPlot[:, :] = np.nan
         testPredictPlot[len(trainPredict)+(look_back*2)+1:len(dataset)-1, :] = testPredict
+        
+        print(len(trainPredictPlot), trainPredictPlot)
+        print(len(testPredictPlot), testPredictPlot)
+        
         # plot baseline and predictions
         plt.plot(scaler.inverse_transform(dataset),label='dataset')
         plt.plot(trainPredictPlot,label='predictTrain')

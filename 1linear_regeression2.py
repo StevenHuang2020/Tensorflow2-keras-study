@@ -51,21 +51,24 @@ def create_model():
     #print(lys.get_weights())
     #print(lys.get_config())
     model.add(lys)
+    #model.add(Dense(1))
+    
     return model
 
 def main():
     print("*"*100)
     x_train, y_train = preparDataSet()
 
-    model = create_model()
+    #model = create_model()
     #model = MyModel()
-
+    model = ks.models.load_model('lLinear.model')
+    
     opt = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=False)
     #opt = optimizers.RMSprop(learning_rate=0.001, rho=0.9)
     model.compile(optimizer='sgd',
                   loss='mean_squared_error' #  #mean_absolute_error
                   ) #metrics=['accuracy']
-    history = model.fit(x=x_train, y=y_train, epochs=50)
+    history = model.fit(x=x_train, y=y_train, epochs=100)
 
     print(len(model.layers))
     weights = model.layers[0].get_weights()
@@ -80,7 +83,8 @@ def main():
     #print(epoch)
     #print(type(loss), loss)
     plotSubplot(x_train, y_train, w, b, epoch, loss)
-
+    model.save('lLinear.model')
+    
 if __name__=='__main__':
     main()
 

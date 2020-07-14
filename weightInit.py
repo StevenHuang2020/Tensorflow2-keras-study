@@ -1,5 +1,6 @@
 #python3
 #steven keras test
+import datetime
 import tensorflow.keras as ks
 import numpy as np 
 from tensorflow.keras.callbacks import LambdaCallback,ModelCheckpoint
@@ -23,18 +24,22 @@ def createModel(initWeight=0):
 def main():
     #y = 2*x -0 #1
     x = np.array([-1.0, 0.0, 1.0, 2.0, 3.0, 4.0], dtype=float)
-    #y = np.array([-3.0,-1.0, 1.0, 3.0, 5.0, 7.0], dtype=float)
-    y = np.array([-2.0, 0.0, 2.0, 4.0, 6.0, 8.0], dtype=float)
+    y = np.array([-3.0,-1.0, 1.0, 3.0, 5.0, 7.0], dtype=float)
+    #y = np.array([-2.0, 0.0, 2.0, 4.0, 6.0, 8.0], dtype=float)
 
-    initWeights=[0,1.2,2,2.5]
+    initWeights=[0] #[0,1.2,2,2.5]
     lossLabels=[]
     for i,Weight in enumerate(initWeights):
         model = createModel(Weight)
+        
+        #------callback---------
         print_weights = LambdaCallback(on_epoch_end=lambda batch, logs: print(model.layers[0].get_weights()))
-        #checkpointer = ModelCheckpoint(filepath='weights.hdf5', verbose=1, save_best_only=False)
+        checkpointer = ModelCheckpoint(filepath='Win_weights.hdf5', verbose=1, save_best_only=False)
+        log_dir = r"logs\fit\\" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        tensorboard_callback = ks.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
         #model.fit(x,y, epochs=10,callbacks = [print_weights,checkpointer])
-        history = model.fit(x,y, epochs=10,callbacks = [print_weights])
+        history = model.fit(x,y, epochs=10,callbacks = [print_weights,checkpointer,tensorboard_callback])
         #history = model.fit(x, y, epochs=10)
 
         w, b = model.layers[0].get_weights()

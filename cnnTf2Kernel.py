@@ -6,10 +6,14 @@ from tensorflow.keras import optimizers
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import LambdaCallback,ModelCheckpoint
+from tensorflow.keras import backend as K
 
 from mnistCnn import prepareMnistData
 from plotCommon import plotSubLossAndAcc
 from common import printModelWeights,getModelWeights
+
+def my_init(shape, dtype=None):
+    return K.random_normal(shape, dtype=dtype)
 
 def createModel(input_shape, classes):
     model = Sequential()
@@ -20,9 +24,7 @@ def createModel(input_shape, classes):
         model.add(Flatten(input_shape=input_shape))
         model.add(Dense(classes, activation='softmax'))
     else:    # multify layers
-        model.add(Conv2D(32, kernel_size=(3, 3), 
-                    activation='relu', 
-                    input_shape=input_shape))
+        model.add(Conv2D(32, kernel_size=(3, 3), kernel_initializer=my_init, activation='relu', input_shape=input_shape))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         #model.add(Dropout(0.5))
 
@@ -59,7 +61,6 @@ def getKernelMatrix(model):
     for i in range(len(w)):
         print(w[i])
         break
-
 
 def main():
     num_classes = 10

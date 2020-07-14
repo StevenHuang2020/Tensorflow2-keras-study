@@ -6,6 +6,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras import backend as K
+import datetime
 
 num_classes = 10
 
@@ -61,9 +62,7 @@ def prepareMnistData(nr=1.0):   #nr: ratio of sample numbers wanted
     
 def createModel(input_shape,num_classes):
     model = Sequential()
-    model.add(Conv2D(32, kernel_size=(3, 3),
-                    activation='relu',
-                    input_shape=input_shape))
+    model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape))
     model.add(Conv2D(64, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Dropout(0.25))
@@ -92,7 +91,10 @@ def main():
     print('input_shape = ', input_shape)
     model = createModel(input_shape,num_classes)
     
-    model.fit(x_train, y_train, epochs=10)
+    log_dir = r"logs\fit\\" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard_callback = ks.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+        
+    model.fit(x_train, y_train, epochs=5, callbacks = [tensorboard_callback])
     #model.fit(x_train, y_train, batch_size=128, epochs=12, verbose=1, validation_data=(x_test, y_test))
     
     score = model.evaluate(x_test, y_test, verbose=0)
