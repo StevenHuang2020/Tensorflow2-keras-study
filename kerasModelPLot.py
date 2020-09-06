@@ -10,11 +10,11 @@ from tensorflow.keras.layers import Input,Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras.utils import plot_model
 
-#pip install pydot
-#install graphviz  Url: https://www2.graphviz.org/Packages/stable/windows/10/msbuild/Release/Win32/graphviz-2.44.1-win32.zip
- 
-# import keras as ks
-# from keras.utils import plot_model
+#1.pip install pydot
+#2.install graphviz  
+#Url: https://www2.graphviz.org/Packages/stable/windows/10/msbuild/Release/Win32/graphviz-2.44.1-win32.zip
+#3. add to your system path
+
 
 def plotModel(model,dstFile,show_shapes=True):
     plot_model(model, to_file=dstFile, show_shapes=show_shapes)
