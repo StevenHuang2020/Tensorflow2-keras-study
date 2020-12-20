@@ -1,11 +1,14 @@
 #python3 tensorflow2 Steven 
 #tensorflow backend K Test
+import os 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 import tensorflow as tf
 from tensorflow.keras import backend as K
 import numpy as np
 
 
-#-----------simple descrpition of backend functi--------------#
+#-----------simple descrpition of backend function--------------#
 #reference: https://www.tensorflow.org/api_docs/python/tf/keras/backend
 #abs():
 #   abs all elements
@@ -35,9 +38,39 @@ import numpy as np
 #   Element-wise value clipping.
 
 def testBackEnd():
-    a = K.abs(-1)
-    print('a=',a) #a= tf.Tensor(1, shape=(), dtype=int32)
+    x = tf.zeros([3, 4], tf.int32)
+    print('x=',x)
+    x = tf.zeros((3, 4), tf.int32)
+    print('x=',x)
+    return 
     
+    a = tf.constant([1,2,3,4,5,6,7,8],dtype=tf.float32)
+    a = K.reshape(a,(4,4))
+    print('a=',a)
+
+    a = tf.constant([[1, 2], [3, 4]],dtype=tf.float32)
+    #a = K.abs(-1)
+    print('a=',type(a),a) #a= tf.Tensor(1, shape=(), dtype=int32)
+    # a = a.numpy()
+    # print('a=',a)
+    
+    # a = tf.zeros([0, 3])
+    # a = tf.concat([a, [[1, 2, 3], [5, 6, 8]]], axis=0)
+    # print('a=',type(a),a)
+    
+    b = tf.constant([[1, 8], [2, 3]],dtype=tf.float32)
+    
+    c = K.square(a - b)
+    print('c=',c)
+    d = K.sum(c,axis=0)
+    print('d=',d)
+    d = K.sum(c,axis=1)
+    print('d=',d)
+    
+    d = K.sum(c,axis=[0,1])
+    print('d=',d)
+    return
+
     a = K.abs([-1,0,9,-10])
     print('a=',a) #a= tf.Tensor([ 1  0  9 10], shape=(4,), dtype=int32)
     
@@ -92,8 +125,39 @@ def testBackEnd():
     print('a=',a)#a= tf.Tensor([0 0 1 2 3 3 3], shape=(7,), dtype=int32)
     
     
+def testConv():
+    x_in = np.array([[1,2,3,4,5],
+                     [6,7,8,9,10],
+                     [2,3,4,5,6],
+                     [5,6,7,8,9],
+                     [4,5,6,3,2]])
+    kernel_in = np.array([[1,2],
+                        [3,4]])
+
+    x = tf.constant(x_in.reshape(-1,5,5,1), dtype=tf.float32)
+    kernel = tf.constant(kernel_in.reshape(2,2,1,1), dtype=tf.float32)
+    
+    print('x.shape=',x.shape)
+    print('kernel.shape=',kernel.shape)
+    y = tf.nn.conv2d(x, kernel, strides=[1], padding='VALID')
+    
+    print('y.shape=',y.shape)
+    print('y=',y)
+
+    #y_GT = tf.zeros(shape=(100,100), dtype=tf.float32)
+    #y_GT = tf.Variable(0, shape=(200,200))
+    y_GT = tf.Variable(tf.constant(0.0, shape = [200,200]))
+    print('y_GT.shape=',y_GT.shape)
+    #y_GT[1,2].assign(2)
+    print('y_GT[1,2]=',y_GT[1,2])
+    #y_GT[1,2] = 1
+    y_GT[1,2].assign(1)
+    print('y_GT[1,2]=',y_GT[1,2])
+    print('y_GT=',y_GT)
+    
 def main():
-    testBackEnd()
+    #testBackEnd()
+    testConv()
     
 if __name__=='__main__':
     main()
