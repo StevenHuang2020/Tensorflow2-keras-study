@@ -26,10 +26,8 @@
 <img src="images/dcgan.gif" width="320" height="240">
 
 #### cnnVisual.py
-<br/>
-<img src="images/featureMap20.png" width="320" height="240">
-<img src="images/featureMap21.png" width="320" height="240">
-<img src="images/featureMap22.png" width="320" height="240">
-<img src="images/featureMap23.png" width="320" height="240">
-
+|||
+|---|---|
+|<img src="images/featureMap20.png" width="320" height="240" />|<img src="images/featureMap21.png" width="320" height="240" />|
+|<img src="images/featureMap22.png" width="320" height="240" />|<img src="images/featureMap23.png" width="320" height="240" />|
 
