@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-#Description: CNN visual
+#Description: CNN visual #1.visual feature map 2.visual cnn kernel 3.visual heat map
 #Date: 2020/12/20
 #Author: Steven Huang, Auckland, NZ
 
-#1.visual feature map
-#2.visual visual cnn kernel
-#3.visual heat map
 #Referece:https://cs231n.github.io/understanding-cnn/
 #Deep Learning with Python.pdf - 160
 #https://github.com/conan7882/CNN-Visualization
@@ -58,9 +55,10 @@ def plotAllActivation(activations, names):
     images_per_row = 8
     for layer_name, layer_activation in zip(names, activations):
         n_features = layer_activation.shape[-1]
-        size = layer_activation.shape[1]
+        h = layer_activation.shape[1]
+        w = layer_activation.shape[2]
         n_cols = n_features // images_per_row
-        display_grid = np.zeros((size * n_cols, images_per_row * size))
+        display_grid = np.zeros((h * n_cols, images_per_row * w))
         
         for col in range(n_cols):
             for row in range(images_per_row):
@@ -70,22 +68,38 @@ def plotAllActivation(activations, names):
                 channel_image *= 64
                 channel_image += 128
                 channel_image = np.clip(channel_image, 0, 255).astype('uint8')
-                display_grid[col * size : (col + 1) * size,
-                    row * size : (row + 1) * size] = channel_image
+                display_grid[col * h : (col + 1) * h,
+                    row * w : (row + 1) * w] = channel_image
                 
-        scale = 1. / size
-        plt.figure(figsize=(scale * display_grid.shape[1],  scale * display_grid.shape[0]))
+        scaleH,scaleW = 1./h, 1./w
+        plt.figure(figsize=(scaleW * display_grid.shape[1],  scaleH * display_grid.shape[0]))
         plt.title(layer_name)
         plt.grid(False)
         plt.imshow(display_grid, aspect='auto', cmap='viridis')
         plt.show()
-        
-def visualModel(model, img):
+   
+def getNeededLayers(model):
+    for i,layer in enumerate(model.layers):
+        if layer.name.startswith('conv2d'):
+            print(i, layer.name, layer.trainable, layer.dtype)
+  
+    layer_names = []
+    layer_outputs = []
+    #layersV = 4
+    #layer_names = [layer.name for layer in model.layers[:layersV]] #all layers before flatten 
+    #layer_outputs = [layer.output for layer in model.layers[:layersV]]
+
+    for i,layer in enumerate(model.layers):
+        if layer.name.startswith('conv2d'):
+            layer_names.append(layer.name)
+            layer_outputs.append(layer.output)
+    return layer_names, layer_outputs
+     
+def visualModel(model, img): 
+    """Visualizing intermediate activations"""
     img = img.reshape(-1, 28, 28, 1)
     
-    layersV = 4
-    layer_names = [layer.name for layer in model.layers[:layersV]] #all layers before flatten 
-    layer_outputs = [layer.output for layer in model.layers[:layersV]]
+    layer_names, layer_outputs = getNeededLayers(model)
     
     activation_model = models.Model(inputs=model.input, outputs=layer_outputs)
     activations = activation_model.predict(img)
@@ -107,8 +121,8 @@ def main():
     test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
     print('\nTest accuracy:', test_acc,'loss=',test_loss)
     
-    testImg = x_test[1]
-    testLabel = y_test[1]
+    testImg = x_test[6]
+    testLabel = y_test[6]
     # print('testImg:', testImg.shape)
     # print('testLabel:', testLabel)
     # plt.imshow(testImg)

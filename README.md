@@ -31,3 +31,9 @@
 |<img src="images/featureMap20.png" width="320" height="240" />|<img src="images/featureMap21.png" width="320" height="240" />|
 |<img src="images/featureMap22.png" width="320" height="240" />|<img src="images/featureMap23.png" width="320" height="240" />|
 
+#### Kernels and class activation visualization
+|||
+|---|---|
+|<img src="images/conv3_block4_out_stiched_filters.png" width="320" height="240" />|<img src="images/conv5_block3_out_0.png" width="320" height="240" />|
+|<img src="images/african_elephant.jpg" width="320" height="240" />|<img src="images/african_elephantHeat.jpg" width="320" height="240" />|
+

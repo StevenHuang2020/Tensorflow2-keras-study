@@ -26,14 +26,17 @@ def getCsvDataset(file,skipLines=3):
     X, y = df.iloc[:, :-1].values, df.iloc[:, -1].values
     return splitData(X,y)
 
-def getModelWeights(model,layer=0):
-    for i in range(len(model.layers)):
-        if layer != None:
-            if layer != i:
-                continue
+def getModelWeights(model,layerId=0):
+    for i,layer in enumerate(model.layers):        
+        print('i,layer:', i, layer.name)
+        if layerId != i:
+            continue
 
-        weights = model.layers[i].get_weights()
-        return weights[0],weights[1]
+        weights = layer.get_weights()
+        if len(weights)>0:
+            #print('layer:', layer, 'weights:', weights)
+            return weights[0],weights[1]
+    return None, None
 
 def printModelWeights(model,layerN=0):
     print("*" * 50,'model paramters')

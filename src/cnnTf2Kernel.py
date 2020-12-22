@@ -56,14 +56,16 @@ def createModel(input_shape, classes):
     model.summary()
     return model
 
-def getKernelMatrix(model):
-    w,b = getModelWeights(model)
-    print(len(w),len(b))
-    print('w.shape=',w.shape)
-    print('b.shape=', b.shape)
-    for i in range(len(w)):
-        print(w[i])
-        break
+def getKernelMatrix(model,layerId=0):
+    w,b = getModelWeights(model, layerId=layerId)
+    print('-------------model kernel--------')
+    if w is not None and b is not None:
+        print('len(w),len(b)=', len(w),len(b))
+        print('w.shape=',w.shape)
+        print('b.shape=', b.shape)
+        for i in w:
+            print(i)
+            break
 
 def main():
     num_classes = 10
