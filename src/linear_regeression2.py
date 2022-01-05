@@ -49,7 +49,7 @@ def main():
     #model = create_model()
     #model = MyModel()
     model = ks.models.load_model('lLinear.model')
-    
+
     opt = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=False)
     #opt = optimizers.RMSprop(learning_rate=0.001, rho=0.9)
     model.compile(optimizer='sgd',
@@ -71,8 +71,6 @@ def main():
     #print(type(loss), loss)
     plotSubplot(x_train, y_train, w, b, loss)
     model.save('lLinear.model')
-    
+
 if __name__=='__main__':
     main()
-
-

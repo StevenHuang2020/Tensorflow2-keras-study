@@ -17,9 +17,9 @@ def createModel(input_shape, classes):
     model = Sequential()
 
     #output layer neurons shoule eqaul to the number of class
-    #activation options: elu softmax selu softplus softsign relu tanh sigmoid hard_sigmoid exponential linear 
-    model.add(Conv2D(32, kernel_size=(3, 3), 
-                activation='relu', 
+    #activation options: elu softmax selu softplus softsign relu tanh sigmoid hard_sigmoid exponential linear
+    model.add(Conv2D(32, kernel_size=(3, 3),
+                activation='relu',
                 input_shape=input_shape))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     #model.add(Dropout(0.5))
@@ -29,11 +29,11 @@ def createModel(input_shape, classes):
     #model.add(Dropout(0.5))
     if 1:#test
         model.add(Conv2DTranspose(filters=16, kernel_size=3, use_bias=False))
- 
+
     model.add(Flatten())
     model.add(Dense(classes, activation='softmax')) #can not give input_shape,auto match
 
-     
+
     lr = 0.01
     opt = optimizers.SGD(learning_rate=lr, momentum=0.0, nesterov=False)
     #opt = optimizers.RMSprop(lr=0.001, rho=0.9)
@@ -47,7 +47,7 @@ def createModel(input_shape, classes):
                   #loss=ks.losses.SparseCategoricalCrossentropy(from_logits=True), #number class
                   loss=ks.losses.categorical_crossentropy, #one hot class
                 metrics=['accuracy'])
-    
+
     model.summary()
     return model
 
@@ -66,11 +66,11 @@ def extractSubwindowImages():
                             rates=[1, 1, 1, 1],
                             padding='VALID')
     print('subs=\n',subs.shape, subs)
-    
+
     for i in subs:
         for j in i:
             print('j=\n',j.shape, j)
-    
+
 def main():
     #return extractSubwindowImages()
 
@@ -79,12 +79,12 @@ def main():
     model = createModel(input_shape,num_classes)
     history = model.fit(x=x_train, y=y_train, epochs=10,batch_size=200)
     #printModelWeights(model)
-    
+
     test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
     print('\nTest accuracy:', test_acc,'loss=',test_loss)
     loss = np.array(history.history['loss'])
     acc  = np.array(history.history['accuracy'])
     plotSubLossAndAcc(loss,acc)
-    
+
 if __name__=='__main__':
     main()

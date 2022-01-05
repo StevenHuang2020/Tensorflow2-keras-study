@@ -7,7 +7,7 @@ def plotLossAx(loss,ax,label='Loss'):
 
 def plotLoss(loss,name='Loss'):
     plt.title(name)
-    plt.plot(loss)
+    plt.plot(range(len(loss)), loss)
     plt.show()
 
 def plotLosses(loss1,loss2,name='Losses'):

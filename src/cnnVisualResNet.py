@@ -27,18 +27,18 @@ def createModel():
     return model
 
 def showOneFilterImg(model):
-    name = 'conv5_block3_out' #'conv5_block2_out' #'conv5_block1_out' 
+    name = 'conv5_block3_out' #'conv5_block2_out' #'conv5_block1_out'
     #'conv4_block6_out' #'conv4_block4_out' #'conv3_block4_out'
     loss, img = visualize_filter(model, 0, layerName=name, width=512, height=512, chn=3)
     file = r'./res/' + name + '_0.png'
     Image.save_img(file, img)
-    showImg(img)    
-    
+    showImg(img)
+
 def show64FilterImg(model):
     # Compute image inputs that maximize per-filter activations
     # for the first 64 filters of our target layer
     name = 'conv3_block4_out'
-    
+
     all_imgs = []
     for filter_index in range(64):
         print("Processing filter %d" % (filter_index,))
@@ -47,12 +47,12 @@ def show64FilterImg(model):
 
         #file = r'./res/' + name + '_stiched_filters_' + str(filter_index)+ '.png'
         #Image.save_img(file, img)
-        
+
     # Build a black picture with enough space for
     # our 8 x 8 filters of size 128 x 128, with a 5px margin in between
     img_width=180
     img_height=180
-    
+
     margin = 5
     n = 8
     cropped_width = img_width - 25 * 2
@@ -71,15 +71,15 @@ def show64FilterImg(model):
                 + cropped_height,
                 :,
             ] = img
-            
+
     file = r'./res/' + name + '_stiched_filters.png'
     Image.save_img(file, stitched_filters)
     showImgF(file)
-    
+
 def main():
     model = createModel()
     showOneFilterImg(model)
     #show64FilterImg(model)
-    
+
 if __name__=="__main__":
     main()

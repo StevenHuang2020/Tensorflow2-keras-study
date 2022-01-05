@@ -44,11 +44,11 @@ import matplotlib.pyplot as plt
 
 def plotOneActivation(activations):
     op = activations[0] #(1, 26, 26, 32)
-    plt.matshow(op[0, :, :, 0], cmap='viridis')#viridis     
+    plt.matshow(op[0, :, :, 0], cmap='viridis')#viridis
     plt.show()
-    
+
     #op = activations[1] #(1, 13, 13, 32)
-    #plt.matshow(op[0, :, :, 0], cmap='viridis')#viridis     
+    #plt.matshow(op[0, :, :, 0], cmap='viridis')#viridis
     #plt.show()
 
 def plotAllActivation(activations, names):
@@ -59,7 +59,7 @@ def plotAllActivation(activations, names):
         w = layer_activation.shape[2]
         n_cols = n_features // images_per_row
         display_grid = np.zeros((h * n_cols, images_per_row * w))
-        
+
         for col in range(n_cols):
             for row in range(images_per_row):
                 channel_image = layer_activation[0, :, :, col * images_per_row + row]
@@ -70,23 +70,23 @@ def plotAllActivation(activations, names):
                 channel_image = np.clip(channel_image, 0, 255).astype('uint8')
                 display_grid[col * h : (col + 1) * h,
                     row * w : (row + 1) * w] = channel_image
-                
+
         scaleH,scaleW = 1./h, 1./w
         plt.figure(figsize=(scaleW * display_grid.shape[1],  scaleH * display_grid.shape[0]))
         plt.title(layer_name)
         plt.grid(False)
         plt.imshow(display_grid, aspect='auto', cmap='viridis')
         plt.show()
-   
+
 def getNeededLayers(model):
     for i,layer in enumerate(model.layers):
         if layer.name.startswith('conv2d'):
             print(i, layer.name, layer.trainable, layer.dtype)
-  
+
     layer_names = []
     layer_outputs = []
     #layersV = 4
-    #layer_names = [layer.name for layer in model.layers[:layersV]] #all layers before flatten 
+    #layer_names = [layer.name for layer in model.layers[:layersV]] #all layers before flatten
     #layer_outputs = [layer.output for layer in model.layers[:layersV]]
 
     for i,layer in enumerate(model.layers):
@@ -94,20 +94,20 @@ def getNeededLayers(model):
             layer_names.append(layer.name)
             layer_outputs.append(layer.output)
     return layer_names, layer_outputs
-     
-def visualModel(model, img): 
+
+def visualModel(model, img):
     """Visualizing intermediate activations"""
     img = img.reshape(-1, 28, 28, 1)
-    
+
     layer_names, layer_outputs = getNeededLayers(model)
-    
+
     activation_model = models.Model(inputs=model.input, outputs=layer_outputs)
     activations = activation_model.predict(img)
     print('layer_names:', layer_names)
     print('activations:', type(activations), len(activations))
     for i,op in enumerate(activations):
         print(i, type(op), op.shape)
-        
+
     #plotOneActivation(activations)
     plotAllActivation(activations, layer_names)
 
@@ -117,19 +117,18 @@ def main():
 
     file = r'./weights/cnnTf2Kernel_2.h5' #r'./weights/cnnTf2Kernel.h5'
     model.load_weights(file)
-        
+
     test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
     print('\nTest accuracy:', test_acc,'loss=',test_loss)
-    
+
     testImg = x_test[6]
     testLabel = y_test[6]
     # print('testImg:', testImg.shape)
     # print('testLabel:', testLabel)
     # plt.imshow(testImg)
     # plt.show()
-    
+
     visualModel(model, testImg)
 
 if __name__=="__main__":
     main()
-

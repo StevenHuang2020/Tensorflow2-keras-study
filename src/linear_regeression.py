@@ -74,21 +74,21 @@ def train(model, epochs, X, y, lr=0.1):
     losses = []
     for epoch in range(epochs):
         loss = trainStep(model, X, y, lr=lr)
-        
+
         w = model.Weight.numpy()
         b = model.Bias.numpy()
         #if epoch % 10 == 0:
         print(f"Epoch count {epoch}: Loss value: {loss.numpy()}, w:{w},b:{b}")
         losses.append(loss)
     return losses
-    
+
 def trainSGD(model, epochs, X, y, lr=0.1):
     losses = []
     for epoch in range(epochs):
         i = random.choice(range(len(X))) #np.random.choice(len(X),1)
         #print(i, X[i], y[i], range(len(X)))
         loss = trainStep(model, X[i], y[i], lr=lr)
-        
+
         w = model.Weight.numpy()
         b = model.Bias.numpy()
         print(f"Epoch count {epoch}: Loss value: {loss.numpy()}, w:{w},b:{b}")
@@ -100,17 +100,17 @@ def main():
     #x, y = preparDataSet()
     X = np.array([-2,-1.0, 0.0, 1.0, 2.0, 3.0, 4.0], dtype=float)
     y = np.array([-5,-3.0,-1.0, 1.0, 3.0, 5.0, 7.0], dtype=float) #y = 2*x -1
-    
+
     lr = 0.01
     epochs = 10
     model = LinearModel()
-    
+
     #------GD---------
     #losses = train(model, epochs, X, y, lr=lr)
-    
+
     #------SGD---------
     losses = trainSGD(model, epochs, X, y, lr=lr)
-            
+
     w = model.Weight.numpy()
     b = model.Bias.numpy()
     #plotSamples(X,y)
@@ -120,5 +120,3 @@ def main():
 
 if __name__=='__main__':
     main()
-
-

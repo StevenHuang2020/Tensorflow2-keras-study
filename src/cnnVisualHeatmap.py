@@ -89,7 +89,7 @@ def getCombineImg(img, heatmap, saveFile=None):
     if saveFile:
         superimposed_img.save(saveFile)
 
-def getHeatMap(model, img): 
+def getHeatMap(model, img):
     """Visualizing class activation map(CAM)"""
     img = img.reshape(-1, 28, 28, 1)
     preds = model.predict(img)
@@ -113,20 +113,20 @@ def main():
 
     file = r'./weights/cnnTf2Kernel_2.h5' #r'./weights/cnnTf2Kernel.h5'
     model.load_weights(file)
-        
+
     test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
     print('\nTest accuracy:', test_acc,'loss=',test_loss)
-    
+
     testImg = x_test[6]
     testLabel = y_test[6]
     print('testLabel:', testLabel)
-    
+
     heatmap = getHeatMap(model, testImg)
     # Display heatmap
     plt.matshow(heatmap)
     plt.show()
-    
+
     getCombineImg(testImg,heatmap, r'./res/7.png')
-    
+
 if __name__=="__main__":
     main()

@@ -17,7 +17,7 @@ from IPython.display import Image
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from cnnVisualHeatmap import make_gradcam_heatmap,getCombineImg
-     
+
 model_builder = keras.applications.xception.Xception
 
 preprocess_input = keras.applications.xception.preprocess_input
@@ -52,15 +52,15 @@ def main():
      # Make model
     model = model_builder(weights="imagenet")
     model.summary()
-    
+
     heatmap = getHeatMap(file, model)
     # # Display heatmap
     # plt.matshow(heatmap)
     # plt.show()
-    
+
     img = keras.preprocessing.image.load_img(file)
     img = keras.preprocessing.image.img_to_array(img)
     getCombineImg(img, heatmap, r'./res/african_elephantHeat.jpg')
-    
+
 if __name__=="__main__":
     main()

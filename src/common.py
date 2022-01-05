@@ -9,7 +9,7 @@ def splitData(X,y, random=False):
         x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3)#random_state=0
     else:
         x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=20)#
-        
+
     print('x_train.shape = ', x_train.shape)
     print('y_train.shape = ', y_train.shape)
     print('x_test.shape = ', x_test.shape)
@@ -27,8 +27,8 @@ def getCsvDataset(file,skipLines=3):
     return splitData(X,y)
 
 def getModelWeights(model,layerId=0):
-    for i,layer in enumerate(model.layers):        
-        print('i,layer:', i, layer.name)
+    for i,layer in enumerate(model.layers):
+        #print('i,layer:', i, layer.name)
         if layerId != i:
             continue
 
@@ -50,14 +50,11 @@ def printModelWeights(model,layerN=0):
         print('layerN:',i,'-------------len:',len(weights))
         print('weight shape:', weights[0].shape, 'b shape:', weights[1].shape)
         print('weight:', weights[0], 'b:',weights[1])
-        #for j in range(len(weights)):
-        #   print('weight',j,':',weights[j], end='')
-        #print('')
-        
+
+
 def main():
     file = r'./db/fucDatasetReg_1F.csv'
     getCsvDataset(file)
-    pass
 
 if __name__ == "__main__":
     main()

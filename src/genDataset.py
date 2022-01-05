@@ -11,10 +11,10 @@ gSavePath=r'./db/'
 
 def noise(len):
     return np.random.rand(len)
-    
+
 def funN(x1,x2):
     return 2.2*x1 + 0.8*x2 + noise(len(x1))*2
-    
+
 def funN2(x1,x2,x3):
     return 2.2*x1 + 0.8*x2 -1.7*x3 + noise(len(x1))*2
 
@@ -23,7 +23,7 @@ def appendComment(file,comment,mode='a'):
         f.write(comment)
 
 def createCSV_NFeatures(Num=100):
-    X0 = 2*np.random.randn(Num)+2     
+    X0 = 2*np.random.randn(Num)+2
     X0 = np.around(X0,decimals=2)
     X1 = 2.3*np.random.randn(Num)+1.6
     X1 = np.around(X1,decimals=2)
@@ -32,7 +32,7 @@ def createCSV_NFeatures(Num=100):
 
     #print(X0.shape)
     #print(X1.shape)
-   
+
     #y = funN(X0,X1)
     y = funN2(X0,X1,X2)
     y = np.around(y,decimals=2)
@@ -76,9 +76,9 @@ def createCSV_NFeatures(Num=100):
 
         a = X0*2.2+0.8*X1+3.2
         #print(np.mean(a),np.min(a),np.max(a)) #-2 8 20
-        
+
         y = np.where(X0*2.2+0.8*X1 > 0, 1, 0)
-           
+
         f = np.hstack((X0,X1))
         f = np.hstack((f,y))
         print('y.shape = ', y.shape)
@@ -93,13 +93,13 @@ def createCSV_NFeatures(Num=100):
 
         a = X0*2.2+0.8*X1+3.2
         print(np.mean(a),np.min(a),np.max(a)) #-2 8 20
-        
+
         y = np.zeros((len(X0),1),dtype=np.int32)
         y[np.where(a<=2)[0]]=0
         y[np.where(a>2)[0]]=1
         y[np.where(a>8)[0]]=2
         #print(y[:20])
-   
+
         f = np.hstack((X0,X1))
         f = np.hstack((f,y))
         print('y.shape = ', y.shape)
@@ -114,19 +114,19 @@ def createCSV(Num=100, gamma=0.01):
 
     def fucNoLinear(x):
         return 0.2*x**2 + 3.2*x + 0.9
-    
+
     X0 = np.linspace(-2, 5, Num)
     X0 = np.around(X0, decimals=2)
-    
+
     if 0:
         y = fuc(X0) + np.around(noise(Num)*gamma, 2)
         #y = np.around(y,decimals=2)
-    
+
         file = gSavePath + 'fucDatasetReg_1F.csv'
         appendComment(file, '', 'w')
         appendComment(file, '#regression dataset one feature\n')
         appendComment(file, f'#y = 2.2*x + 3.8 + noise*{gamma}\n')
-    
+
     else:
         y = fucNoLinear(X0) + np.around(noise(Num)*gamma, 2)
 
@@ -139,13 +139,13 @@ def createCSV(Num=100, gamma=0.01):
     y = y.reshape((y.shape[0],1))
     df = pd.DataFrame(np.hstack((X0,y)))
     df.to_csv(file,index=False,header=['x','y'],mode='a')
-    
+
     print('X0.shape = ', X0.shape)
     print('y.shape = ', y.shape)
-    
+
 def main():
     createCSV()
     #createCSV_NFeatures(1000)
-    
+
 if __name__=='__main__':
     main()

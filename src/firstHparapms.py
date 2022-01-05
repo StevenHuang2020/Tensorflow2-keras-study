@@ -22,7 +22,7 @@ def createModel(hparams):
     model.add(Dense(hparams[HP_NUM_UNITS], input_shape=[1]))
     #model.compile(optimizer='sgd', loss='mean_squared_error')
     model.add(Dense(1))
-    
+
     model.compile(hparams[HP_OPTIMIZER], loss='mean_squared_error')
     model.summary()
     return model
@@ -41,12 +41,12 @@ def train(x,y):
             print({h.name: hparams[h] for h in hparams})
             model = createModel(hparams)
             model.fit(x, y, epochs=100)
-            
+
             print('predict x=10, y=',model.predict([10.0]))
             #printModelWeights(model)
-            
+
             session_num += 1
-      
+
 def main():
     # y = 2*x -1
     x = np.array([-1.0, 0.0, 1.0, 2.0, 3.0, 4.0], dtype=float)
@@ -54,7 +54,7 @@ def main():
 
     # model = createModel(hparams)
     # model.fit(x, y, epochs=100)
-    
+
     # w, b = model.layers[0].get_weights()
     # print('weight %f , bias %f' % (w, b))
     # print(model.predict([10.0]))

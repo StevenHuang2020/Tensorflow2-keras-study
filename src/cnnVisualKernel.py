@@ -15,7 +15,7 @@ from mnistCnn import prepareMnistData
 from cnnTf2Kernel import createModel,getKernelMatrix
 import matplotlib.pyplot as plt
 import tensorflow.keras.preprocessing.image as Image
-import cv2 
+import cv2
 
 def showImgF(file):
     showImg(cv2.imread(file))
@@ -35,15 +35,15 @@ def printCNNModelLayers(model):
             except:
                 #print(i, layer.name, ' and no weights found!')
                 pass
-            
+
 def getNeededLayers(model):
     printCNNModelLayers(model)
-  
+
     layer_names = []
     layer_outputs = []
     layers = []
     #layersV = 4
-    #layer_names = [layer.name for layer in model.layers[:layersV]] #all layers before flatten 
+    #layer_names = [layer.name for layer in model.layers[:layersV]] #all layers before flatten
     #layer_outputs = [layer.output for layer in model.layers[:layersV]]
 
     for i,layer in enumerate(model.layers):
@@ -53,13 +53,13 @@ def getNeededLayers(model):
             layer_outputs.append(layer.output)
     return layer_names, layers, layer_outputs
 
-def visualKernels(model): 
-    """Visualizing trained kernels"""   
+def visualKernels(model):
+    """Visualizing trained kernels"""
     layer_names, layers, _ = getNeededLayers(model)
     for name,layer in zip(layer_names, layers):
         filters, biases = layer.get_weights()
         print(name, filters.shape)
-        
+
         # normalize filter values to 0-1 so we can visualize them
         f_min, f_max = filters.min(), filters.max()
         filters = (filters - f_min) / (f_max - f_min)
@@ -81,7 +81,7 @@ def visualKernels(model):
                 ax.set_yticks([])
                 # plot filter channel in grayscale
                 plt.imshow(f[:, :, j], ) #cmap='gray'
-     
+
         # show the figure
         plt.show()
 
@@ -118,7 +118,7 @@ def deprocess_image(img):
     return img
 
 def compute_loss(layerModel, input_image, filter_index):
-    activation = layerModel(input_image) 
+    activation = layerModel(input_image)
     #print('activation.shape:', activation.shape)
     # We avoid border artifacts by only involving non-border pixels in the loss.
     filter_activation = activation[:, 2:-2, 2:-2, filter_index]
@@ -144,21 +144,21 @@ def visualize_filter(model, filter_index=0, layerName='conv2d', width=180, heigh
     iterations = 30
     learning_rate = 10.0
     img = initialize_image(img_width=width, img_height=height, chn=chn)
-    
+
     for iteration in range(iterations):
         loss, img = gradient_ascent_step(layerModel, img, filter_index, learning_rate)
         #print('loss=', loss)
     # Decode the resulting input image
     img = deprocess_image(img[0].numpy())
-    
+
     # file = r'./res/cnnTf2Kernel_0.png'
     # Image.save_img(file, img)
-    # showImgF(file)    
+    # showImgF(file)
     return loss, img
 
 def show32FilterImg(model):
     name = 'conv2d_1' #'conv2d'
-    
+
     all_imgs = []
     for filter_index in range(32):
         print("Processing filter %d" % (filter_index,))
@@ -167,12 +167,12 @@ def show32FilterImg(model):
 
         #file = r'./res/' + name + '_stiched_filters_' + str(filter_index)+ '.png'
         #Image.save_img(file, img)
-        
+
     # Build a black picture with enough space for
     # our 8 x 8 filters of size 128 x 128, with a 5px margin in between
     img_width=180
     img_height=180
-    
+
     margin = 1
     #n = 8
     row, col = 4,8
@@ -182,7 +182,7 @@ def show32FilterImg(model):
     height = row * cropped_height + (row - 1) * margin
     stitched_filters = np.zeros((width, height, 1))
     print('width, height:', width, height)
-    
+
     # Fill the picture with our saved filters
     for i in range(col):
         for j in range(row):
@@ -194,24 +194,24 @@ def show32FilterImg(model):
                 + cropped_height,
                 :,
             ] = img
-            
+
     file = r'./res/' + name + '_stiched_filters.png'
     Image.save_img(file, stitched_filters)
     showImgF(file)
-    
+
 def main():
     x_train, y_train, x_test, y_test, input_shape = prepareMnistData(0.1) #input_shape 28*28*1
     model = createModel(input_shape, classes=10)
 
     file = r'./weights/cnnTf2Kernel_2.h5' #r'./weights/cnnTf2Kernel.h5'
     model.load_weights(file)
-        
+
     test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
     print('\nTest accuracy:', test_acc,'loss=',test_loss)
-        
+
     #visualKernels(model)
     #visualize_filter(model)
     show32FilterImg(model)
-    
+
 if __name__=="__main__":
     main()

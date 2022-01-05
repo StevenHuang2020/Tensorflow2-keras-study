@@ -22,7 +22,7 @@ def createModel(input_shape, classes):
     model = Sequential()
 
     #output layer neurons shoule eqaul to the number of class
-    #activation options: elu softmax selu softplus softsign relu tanh sigmoid hard_sigmoid exponential linear 
+    #activation options: elu softmax selu softplus softsign relu tanh sigmoid hard_sigmoid exponential linear
     if 0:    # 1 layer
         model.add(Flatten(input_shape=input_shape))
         model.add(Dense(classes, activation='softmax'))
@@ -34,11 +34,11 @@ def createModel(input_shape, classes):
         model.add(Conv2D(32, (3, 3), activation="relu"))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         #model.add(Dropout(0.5))
-        
+
         model.add(Flatten())
         model.add(Dense(classes, activation='softmax')) #can not give input_shape,auto match
-  
-     
+
+
     lr = 0.001
     #opt = optimizers.SGD(learning_rate=lr)
     #opt = optimizers.RMSprop(lr=lr)
@@ -52,7 +52,7 @@ def createModel(input_shape, classes):
                   #loss=ks.losses.SparseCategoricalCrossentropy(from_logits=True), #number class
                   loss=ks.losses.categorical_crossentropy, #one hot class
                 metrics=['accuracy'])
-    
+
     model.summary()
     return model
 
@@ -78,19 +78,19 @@ def main():
         checkpointer = ModelCheckpoint(filepath=file, verbose=0, save_best_only=False)
         history = model.fit(x=x_train, y=y_train, batch_size=800, epochs=30,callbacks = [checkpointer])
         #printModelWeights(model)
-        
+
         loss = np.array(history.history['loss'])
         acc  = np.array(history.history['accuracy'])
         #print('loss=',loss)
         #print('acc=', acc)
         #plotSubLossAndAcc(loss,acc)
-    
+
     else: #load from pretrained file
         model.load_weights(file)
-        
+
     test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
     print('\nTest accuracy:', test_acc,'loss=',test_loss)
-   
+
     #getKernelMatrix(model)
 
 if __name__=='__main__':

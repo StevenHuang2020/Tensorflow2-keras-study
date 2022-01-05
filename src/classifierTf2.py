@@ -15,16 +15,16 @@ def create_model(nFeatures=1):
     model = ks.models.Sequential()
 
     #output layer neurons shoule eqaul to the number of class
-    #activation options: elu softmax selu softplus softsign relu tanh sigmoid hard_sigmoid exponential linear 
+    #activation options: elu softmax selu softplus softsign relu tanh sigmoid hard_sigmoid exponential linear
     if 0:    # 1 layer
-        model.add(Dense(3, input_shape=(nFeatures,),activation='softmax')) 
+        model.add(Dense(3, input_shape=(nFeatures,),activation='softmax'))
     else:    # multify layers
         model.add(Dense(10, input_shape=(nFeatures,)))
         model.add(Dense(10))
         model.add(Dense(10))
         model.add(Dense(8, activation='softmax')) #can not give input_shape,auto match
         model.add(Dense(3))
-     
+
     lr = 0.01
     opt = optimizers.SGD(learning_rate=lr, momentum=0.0, nesterov=False)
     #opt = optimizers.RMSprop(lr=0.001, rho=0.9)
@@ -37,27 +37,27 @@ def create_model(nFeatures=1):
                   #loss='mean_squared_error', #  #mean_absolute_error
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                 metrics=['accuracy'])
-    
+
     model.summary()
     return model
 
 def main():
     #file = r'./db/fucDatasetClf_2F.csv'
     file = r'./db/fucDatasetClf_2F_MClass.csv'
-    
+
     x_train, x_test, y_train, y_test = getCsvDataset(file)
 
     nFeatures = x_train.shape[1]
     print("*"*100,'nFeatures=',nFeatures)
-    
+
     model = create_model(nFeatures)
     history = model.fit(x=x_train, y=y_train, epochs=50)
     #printModelWeights(model)
-    
+
     test_loss, test_acc = model.evaluate(x_test,  y_test, verbose=2)
     print('\nTest accuracy:', test_acc,'loss=',test_loss)
 
-    
+
     num = 5
     predProb_test = model.predict(x_test)
     pred_test = predProb_test.argmax(axis=-1)
@@ -74,5 +74,3 @@ def main():
 
 if __name__=='__main__':
     main()
-
-
